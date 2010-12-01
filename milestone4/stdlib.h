@@ -10,6 +10,18 @@
 void Relinquish (void);
 void Sleep (unsigned long duration);
 
+short InputKeyboardCharacter(void);
+int IsKeyboardCharacterAvailable(void);
+
+short InputDebugCharacter(void);
+int IsDebugCharacterAvailable(void);
+
+void OutputDebugCharacter (short);
+int IsDebugPortBusy(void);
+
+unsigned long GetSystemTickCount(void);
+unsigned long GetGlobalDataAddress(void);
+
 #define __STDLIB_H__
 #endif
 

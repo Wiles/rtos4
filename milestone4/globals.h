@@ -16,5 +16,17 @@ extern unsigned long gTickCount;
 
 extern char application_stack_memory[TOTAL_STACK_MEMORY];
 
+extern short keyboard_data[256];
+extern char keyboard_head;
+extern char keyboard_tail;
+
+extern short serial_in_data[256];
+extern char serial_in_head;
+extern char serial_in_tail;
+
+extern short serial_out_data[256];
+extern char serial_out_head;
+extern char serial_out_tail;
+
 #define __GLOBALS_H__
 #endif
