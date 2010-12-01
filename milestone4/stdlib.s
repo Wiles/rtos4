@@ -8,9 +8,16 @@
 ; be done in assembly.
 ;
 
-BASS_RELINQUISH		equ 1
-BASS_SLEEP		equ 2
-
+BASS_RELINQUISH			equ 1
+BASS_SLEEP				equ 2
+BASS_GET_KEYBOARD		equ 3
+BASS_KEYBOARD_STATUS	equ 4
+BASS_GET_DEBUG			equ 5
+BASS_DEBUG_IN_STATUS	equ 6
+BASS_WRITE_DEBUG		equ 7
+BASS_DEBUG_BUSY			equ 8
+BASS_TICK_COUNT			equ 9
+BASS_GLOBAL_ADDRESS		equ 10
 
 ;
 ; void Relinquish (void);
@@ -39,6 +46,32 @@ _Sleep:
 	move.l	#BASS_SLEEP, d0
 	trap	#1
 	rts
+
+;short InputKeyboardCharacter(void);
+_InputKeyboardCharacter:
+	rts
+;int IsKeyboardCharacterAvailable(void);
+_IsKeyboardCharacterAvailable:
+	rts
+;short InputDebugCharacter(void);
+_InputDebugCharacter:
+	rts
+;int IsDebugCharacterAvailable(void);
+_IsDebugCharacterAvailable:
+	rts
+;void OutputDebugCharacter (short);
+_OutputDebugCharacter:
+	rts
+;int IsDebugPortBusy(void);
+_IsDebugPortBusy:
+	rts
+;unsigned long GetSystemTickCount(void);
+_GetSystemTickCount:
+	rts
+;unsigned long GetGlobalDataAddress(void);
+_GetGlobalDataAddress:
+	rts
+
 
 
 

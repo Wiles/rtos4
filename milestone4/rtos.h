@@ -14,7 +14,9 @@
 #define BLOCKED			'B'
 
 #define REASON_NONE		0
-#define REASON_SLEEP		1
+#define REASON_SLEEP	1
+#define REASON_KEYBOARD	2
+#define REASON_DEBUG_IN	3
 
 #define SUCCESS			0
 #define ERROR			-1

@@ -86,7 +86,7 @@ vector_table:
 	dc.l common_handler   ; vector 44
 	dc.l common_handler   ; vector 45
 	dc.l common_handler   ; vector 46
-	dc.l common_handler   ; vector 47
+	dc.l trap15_handler   ; vector 47
 
 	dc.l common_handler   ; vector 48
 	dc.l common_handler   ; vector 49
