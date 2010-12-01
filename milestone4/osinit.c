@@ -94,6 +94,17 @@ InitOS (void)
 	 */
 
 	gTickCount = 0;
+	
+	keyboard_head = 0;
+	keyboard_tail = 0;
+
+	serial_in_head = 0;
+	serial_in_tail = 0;
+
+	serial_out_head = 0;
+	serial_out_tail = 0;
+	
+	
 }	/* end InitOS */
 
 

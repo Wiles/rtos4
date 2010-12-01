@@ -17,8 +17,16 @@
 #ifndef __SHARED_H__
 
 
-#define BASS_RELINQUISH				1
+#define BASS_RELINQUISH			1
 #define BASS_SLEEP				2
+#define BASS_GET_KEYBOARD		3
+#define BASS_KEYBOARD_STATUS	4
+#define BASS_GET_DEBUG			5
+#define BASS_DEBUG_IN_AVE		6
+#define BASS_WRITE_DEBUG		7
+#define BASS_DEBUG_BUSY			8
+#define BASS_TICK_COUNT			9
+#define BASS_GLOBAL_ADDRESS		10
 
 
 

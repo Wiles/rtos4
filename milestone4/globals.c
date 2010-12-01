@@ -26,3 +26,15 @@ PDB *pdb_First;
 
 unsigned long gTickCount;
 
+short keyboard_data[256];
+char keyboard_head;
+char keyboard_tail;
+
+short serial_in_data[256];
+char serial_in_head;
+char serial_in_tail;
+
+short serial_out_data[256];
+char serial_out_head;
+char serial_out_tail;
+
