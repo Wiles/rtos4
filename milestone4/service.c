@@ -50,6 +50,62 @@ SupportBASS (void)
 		pdb_Current->Reason = REASON_SLEEP;
 		fSchedule = TRUE;
 		break;
+		
+	case BASS_GET_KEYBOARD:
+		if( )
+		{
+			pdb_Current->RegD0 = ;
+		}
+		else
+		{
+			pdb_Current->Status = BLOCKED;
+			pdb_Current->Reason = REASON_KEYBOARD;
+			fSchedule = TRUE;
+		}
+		break;
+	case BASS_BASS_KEYBOARD_STATUS:
+		if( keyboard_head != keyboard_tail )
+		{
+			pdb_Current->RegD0 = TRUE;
+		}
+		else
+		{
+			pdb_Current->RegD0 = FALSE;
+		}
+		break;
+	case BASS_GET_DEBUG:
+		if( serial_in_head != serial_in_tail )
+		{
+			pdb_Current->RegD0 = serial_in_data[serial_in_head];
+			--serial_in_head;
+		}
+		else
+		{
+			pdb_Current->Status = BLOCKED;
+			pdb_Current->Reason = REASON_DEBUG_IN;
+			fSchedule = TRUE;
+		}
+		break;
+	case BASS_DEBUG_IN_STATUS:
+		if( serial_in_head != serial_in_tail )
+		{
+			pdb_Current->RegD0 = TRUE;
+		}
+		else
+		{
+			pdb_Current->RegD0 = FALSE;
+		}
+		break;
+	case BASS_WRITE_DEBUG:
+		break;
+	case BASS_DEBUG_BUSY:
+		break;
+	case BASS_TICK_COUNT:
+		pdb_Current->RegD0 = gTickCount;
+		break;
+	case BASS_GLOBAL_ADDRESS:
+		pdb_Current->RegD0 = pdb_Current->PointerToGlobalSpace;
+		break;
 
 	/*
 	 * TODO:
