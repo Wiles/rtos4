@@ -1,0 +1,12 @@
+[config]
+output=rtos.asm
+segments=code,bss,stack
+[code]
+base=00FC0000
+files=vector.s,romconst.s,bootstrap.s,ossupport.s,ipl6.s,trap.s,osinit.asm,timer.asm,service.asm,support.asm,task1.asm,task2.asm,stdlib.s
+[bss]
+base=00000400
+files=globals.asm
+[stack]
+base=00008000
+files=stack.asm
