@@ -52,9 +52,10 @@ SupportBASS (void)
 		break;
 		
 	case BASS_GET_KEYBOARD:
-		if( )
+		if( keyboard_head != keyboard_tail)
 		{
-			pdb_Current->RegD0 = ;
+			pdb_Current->RegD0 = keyboard_date[keyboard_tail];
+			++keyboard_tail
 		}
 		else
 		{
@@ -63,7 +64,7 @@ SupportBASS (void)
 			fSchedule = TRUE;
 		}
 		break;
-	case BASS_BASS_KEYBOARD_STATUS:
+	case BASS_KEYBOARD_STATUS:
 		if( keyboard_head != keyboard_tail )
 		{
 			pdb_Current->RegD0 = TRUE;
@@ -76,8 +77,8 @@ SupportBASS (void)
 	case BASS_GET_DEBUG:
 		if( serial_in_head != serial_in_tail )
 		{
-			pdb_Current->RegD0 = serial_in_data[serial_in_head];
-			--serial_in_head;
+			pdb_Current->RegD0 = serial_in_data[serial_in_tail];
+			++serial_in_tail;
 		}
 		else
 		{

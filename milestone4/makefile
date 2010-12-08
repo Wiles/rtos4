@@ -35,7 +35,5 @@ task2.asm: task2.c stdlib.h shared.h
 	cc68k task2.c -M
 
 clean:
-	del *.asm
-	del *.lst
-	del *.hex
+	rm *.asm *.lst *.hex *.ASM *.LST *.HEX
 
