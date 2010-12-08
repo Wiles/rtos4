@@ -52,6 +52,8 @@ _InputKeyboardCharacter:
 	rts
 ;int IsKeyboardCharacterAvailable(void);
 _IsKeyboardCharacterAvailable:
+	move.l #BASS_KEYBOARD_STATUS, d0
+	trap #1
 	rts
 ;short InputDebugCharacter(void);
 _InputDebugCharacter:
@@ -67,11 +69,10 @@ _IsDebugPortBusy:
 	rts
 ;unsigned long GetSystemTickCount(void);
 _GetSystemTickCount:
+	move.l #BASS_TICK_COUNT, d0
+	trap #1
+	
 	rts
 ;unsigned long GetGlobalDataAddress(void);
 _GetGlobalDataAddress:
 	rts
-
-
-
-

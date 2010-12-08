@@ -59,7 +59,7 @@ TimerSupport (void)
 	 * the Windows "GetTickCount" concept)
 	 */
 
-	gTickCount++;
+	++gTickCount;
 
 	/*
 	 * and that's all folks!

@@ -42,7 +42,6 @@ Task1_main (void)
 {
 	unsigned short i = 0;
 	unsigned char *p = (unsigned char *)0x0000E011L;
-
 	/*
 	 * the manipulation of the counter i, and the
 	 * pointer p, is done JUST FOR DEMO PURPOSES.
@@ -55,7 +54,7 @@ Task1_main (void)
 	 * thus, we end up flashing the first 7 segment LED every
 	 * 32768 times through the Relinquish request!
 	 */
-
+	
 	while (1) {
 		i++;
 		if (i & 0x8000)

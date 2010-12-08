@@ -40,9 +40,9 @@ TASK taskTask2 = {
 void
 Task2_main (void)
 {
-	unsigned short i = 0;
+	unsigned char i = GetSystemTickCount();
 	unsigned char *p = (unsigned char *)0x0000E013L;
-
+	
 	/*
 	 * the manipulation of the counter i, and the
 	 * pointer p, is done JUST FOR DEMO PURPOSES.
@@ -55,11 +55,8 @@ Task2_main (void)
 	 */
 
 	while (1) {
-		i++;
-		if (i & 0x0001)
-			*p = 0;
-		else
-			*p = 0xFF;
+		i = (char)GetSystemTickCount();
+		*p = i;
 
 		Sleep (1);
 	}	/* end while */
