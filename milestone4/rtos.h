@@ -1,9 +1,16 @@
 /*
- * rtos.h
+ * \file rtos.h
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
+ * \brief
  * This file provides global declarations for the RTOS. This
  * is NOT meant to be shared with user level applications,
  * as the declarations are geared towards RTOS internal support
+ *
+ * \remark
+ * Though many global variables are defined here, they may or may not
+ *	be initialized here, so watch out!
+ * 
  */
 
 #ifndef __RTOS_H__
@@ -95,8 +102,15 @@ extern void RoundRobinScheduler (void);
 extern char *rtos_strcpy (char *dest, char *src);
 extern int InitializePDB (int taskID, PDB *p, TASK *t, char *stack, unsigned long initVal);
 
+/*
+ *
+ */
 
-
+typedef struct systemtime {
+	 int hour;
+	 int minute;
+	 int second;
+} SYSTEMTIME;
 
 #define __RTOS_H__
 #endif

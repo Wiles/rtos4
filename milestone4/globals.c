@@ -1,7 +1,13 @@
 /*
- * globals.c
+ * \file globals.c
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
- * This file declares global variables for our RTOS.
+ * \brief
+ * This file houses the operating system's global variables 
+ * \remark
+ * Though many global variables are defined here, they may or may not
+ *	be initialized here, so watch out!
+ * 
  */
 
 #include "rtos.h"

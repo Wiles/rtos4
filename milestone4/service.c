@@ -1,31 +1,41 @@
 /*
- * service.c
- *
+ * \file service.c
+ *	\author Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
+ * \brief
  * This file will implement support for OS service calling. According to
  * requirements, we must support Basic Atari System Services (BASS) as 
  * well as Graphical Atari System Services (GASS).
+ * \remark
+ * As of now this file does the tasks defined for group 1 of the RTOS project. 
+ * These include: 
+ * 
  */
 
 #include "shared.h"
 #include "rtos.h"
 #include "globals.h"
 
-/*
- * void SupportBASS (void);
- *
- * This function implements service call support for the basic
- * services. It will mark whether a reschedule of a new task is
- * necessary in terms of supporting the request.
- */
-
-void
-SupportBASS (void)
+ /*
+  * \brief Service call handler for RTOS
+  * \remark
+  * This function implements service call support for the basic
+  * services. It will mark whether a reschedule of a new task is
+  * necessary in terms of supporting the request.
+  */
+void SupportBASS (void)
 {
+	/* Initialize our variables */
 	PDB *p;
 	unsigned long *ptrUSP;
 	int fSchedule;
+	int hr;
+	int min;
+	int sec;
+	struct systemtime *pTime;
 
-	fSchedule = FALSE;	/* no forcible schedule */
+
+	/* force re-scheduling */
+	fSchedule = FALSE;
 
 	/*
 	 * since service params on user stack,
@@ -50,12 +60,11 @@ SupportBASS (void)
 		pdb_Current->Reason = REASON_SLEEP;
 		fSchedule = TRUE;
 		break;
-		
 	case BASS_GET_KEYBOARD:
 		if( keyboard_head != keyboard_tail)
 		{
-			pdb_Current->RegD0 = keyboard_date[keyboard_tail];
-			++keyboard_tail
+			pdb_Current->RegD0 = keyboard_data[keyboard_tail];
+			++keyboard_tail;
 		}
 		else
 		{
@@ -107,13 +116,17 @@ SupportBASS (void)
 	case BASS_GLOBAL_ADDRESS:
 		pdb_Current->RegD0 = pdb_Current->PointerToGlobalSpace;
 		break;
-
-	/*
-	 * TODO:
-	 *
-	 * future services will be implemented in this switch statement
-	 */
-
+	case BASS_GETCLOCKTIME:
+		/* grab the service parameters from the stack */
+		pTime = (struct systemtime *) ptrUSP[0];
+		/* TODO: FIX DIVISION FOR THE TWO OPERATIONS BELOW */
+		/* we will use gTickCount/3 to mimic the actual hour */
+		/*	pTime->hour = gTickCount/3; */
+		/* we will use gTickCount/2 to mimic the actual minute */
+		/* pTime->minute = gTickCount/2; */
+		/* we will use gTickCount to mimic the actual second */
+		pTime->second = gTickCount;
+		break;
 	default:
 		pdb_Current->RegD0 = ERROR;
 		break;
@@ -125,10 +138,6 @@ SupportBASS (void)
 
 	if (fSchedule)
 		RoundRobinScheduler();
-
-	/*
-	 * and that's it!
-	 */
 
 }	/* end SupportBASS */
 

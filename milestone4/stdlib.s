@@ -1,6 +1,7 @@
 ;
-; stdlib.s
+; \file stdlib.s
 ;
+; \remark
 ; This file implements standard library wrappers for user code
 ; to access RTOS services. Services will obtain their parameters
 ; from the user stack. The wrappers are implemented in assembly code
@@ -18,6 +19,7 @@ BASS_WRITE_DEBUG		equ 7
 BASS_DEBUG_BUSY			equ 8
 BASS_TICK_COUNT			equ 9
 BASS_GLOBAL_ADDRESS		equ 10
+BASS_GETCLOCKTIME 		equ 11
 
 ;
 ; void Relinquish (void);
@@ -75,4 +77,15 @@ _GetSystemTickCount:
 	rts
 ;unsigned long GetGlobalDataAddress(void);
 _GetGlobalDataAddress:
+	rts
+
+;void GetClockTime(struct systemtime *);
+;
+;This wrapper will get the current clock time
+;It will the passed to a time struct and the time extracted 
+; as minutes, hours, and seconds
+
+_GetClockTime:
+	move.l #BASS_GETCLOCKTIME, d0                     
+	trap   #1
 	rts

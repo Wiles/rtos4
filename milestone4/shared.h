@@ -1,8 +1,10 @@
 /*
- * shared.h
+ * \file shared.h
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
+ * \brief
  * The following are shared declarations for both RTOS and user level tasks.
- *
+ * \remark
  * First are official RTOS service numbers. This
  * file is public and will be shared between user level (standard
  * library service wrappers) and the kernel level (service implementation)
@@ -11,9 +13,9 @@
  * task developer (to initialize necessary information for the RTOS
  * kernel to create a PDB, etc.) and the RTOS which needs that information
  * to build the PDB list, etc.
+ * 
  */
-
-
+ 
 #ifndef __SHARED_H__
 
 
@@ -27,6 +29,7 @@
 #define BASS_DEBUG_BUSY			8
 #define BASS_TICK_COUNT			9
 #define BASS_GLOBAL_ADDRESS		10
+#define BASS_GETCLOCKTIME 		11
 
 
 

@@ -1,9 +1,13 @@
 /*
- * support.c
+ * \file support.c
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
+ * \brief
  * Additional C based support routines for RTOS
+ * \remark
+ * 
+ * 
  */
-
 #include "rtos.h"
 #include "globals.h"
 

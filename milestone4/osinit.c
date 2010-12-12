@@ -1,11 +1,17 @@
 /*
- * osinit.c
+ * \file osinit.c
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
+ * \brief
  * This file provides RTOS initialization support from the C
  * programming perspective.
  *
- * It will initialize the PDBs with values, and configure other
+ * It initializes the PDBs with values, and configure other
  * operating system global data.
+ * \remark
+ * Though many global variables are defined here, they may or may not
+ *	be initialized here, so watch out!
+ * 
  */
 
 #include "rtos.h"
