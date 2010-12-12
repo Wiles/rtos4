@@ -1,4 +1,4 @@
-/*
+/*!
  * \file task1.c
  *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *

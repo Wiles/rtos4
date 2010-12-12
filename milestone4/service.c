@@ -1,4 +1,4 @@
-/*
+/*!
  * \file service.c
  *	\author Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  * \brief
@@ -15,7 +15,7 @@
 #include "rtos.h"
 #include "globals.h"
 
- /*
+ /*!
   * \brief Service call handler for RTOS
   * \remark
   * This function implements service call support for the basic
