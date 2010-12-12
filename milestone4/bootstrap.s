@@ -1,6 +1,7 @@
 ;
-; bootstrap.s
+; \file bootstrap.s
 ;
+; \remark
 ; this file provides bootstrap rom/memory/peripheral checking
 ; plus launch of OS initialization and final work to launch first task
 ;

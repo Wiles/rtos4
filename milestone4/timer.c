@@ -1,10 +1,17 @@
 /*
- * timer.c
+ * \file timer.c
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
+ * \brief
  * This file provides implementation support for timer interrupt
  * handler. It is assumed that the CPU context of the current task
  * is already saved, and will handle Sleep service support along with
  * pre-emptive context switching.
+ *
+ * \remark
+ * Though many global variables are defined here, they may or may not
+ *	be initialized here, so watch out!
+ * 
  */
 
 #include "rtos.h"

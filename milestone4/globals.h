@@ -1,7 +1,11 @@
 /*
- * globals.h
+ * \file globals.h
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
+ * \brief
  * This file declares external global variables for our RTOS.
+ * \remark
+ * 
  */
 
 #ifndef __GLOBALS_H__

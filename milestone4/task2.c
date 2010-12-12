@@ -1,15 +1,14 @@
 /*
- * task2.c
+ * \file task2.c
+ *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *
- * This is task #2. It will demonstrate use of Sleep service.
+ * \brief
+ * \remark
+ * 
  */
-
+ 
 #include "shared.h"
 #include "stdlib.h"
-
-/*
- * prototype
- */
 
 void Task2_main (void);
 
