@@ -121,9 +121,9 @@ void SupportBASS (void)
 		pTime = (struct systemtime *) ptrUSP[0];
 		/* TODO: FIX DIVISION FOR THE TWO OPERATIONS BELOW */
 		/* we will use gTickCount/3 to mimic the actual hour */
-		/*	pTime->hour = gTickCount/3; */
+		/*	pTime->hour = gTickCount / 3; */
 		/* we will use gTickCount/2 to mimic the actual minute */
-		/* pTime->minute = gTickCount/2; */
+		/* pTime->minute = gTickCount / 2; */
 		/* we will use gTickCount to mimic the actual second */
 		pTime->second = gTickCount;
 		break;
