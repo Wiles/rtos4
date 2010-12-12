@@ -13,34 +13,68 @@
 #include "rtos.h"
 #include "globals.h"
 
-/* 
- * allocate an array of PDBs
+/*!
+ * PDB allocation
  */
-
 PDB pdb[MAX_PDBS];
 
-/*
- * markers for current and first PDBs in our circular list
+/*!
+ * Marker for current PDB in our circular list
  */
-
 PDB *pdb_Current;
+
+/*!
+ * Marker first PDB in our circular list
+ */
 PDB *pdb_First;
 
-/*
+/*!
  * keep track of # of timer interrupts - a crude clock!
  */
-
 unsigned long gTickCount;
 
+/*!
+ * Data for keyboard input buffer
+ */
 short keyboard_data[256];
-char keyboard_head;
-char keyboard_tail;
 
+/*!
+ * Index for beginning of keyboard data buffer
+ */
+unsigned char keyboard_head;
+
+/*!
+ * Index for end of keyboard data buffer
+ */
+unsigned char keyboard_tail;
+
+/*!
+ * Data for serial input buffer
+ */
 short serial_in_data[256];
-char serial_in_head;
-char serial_in_tail;
 
+/*!
+ * Index for beginning of keyboard data buffer
+ */
+unsigned char serial_in_head;
+
+/*!
+ * Index for end of keyboard data buffer
+ */
+unsigned char serial_in_tail;
+
+/*!
+ * Data for serial out input buffer
+ */
 short serial_out_data[256];
-char serial_out_head;
-char serial_out_tail;
+
+/*!
+ * Index for beginning of serial output data buffer
+ */
+unsigned char serial_out_head;
+
+/*!
+ * Index for end of serial output data buffer
+ */
+unsigned char serial_out_tail;
 
