@@ -1,4 +1,4 @@
-/*
+/*!
  * \file rtos.h
  *	\author Ig Kolenko, Samuel Lewis, Adrian Hyde, Dan Evans, Hekar Khani
  *

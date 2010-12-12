@@ -1,7 +1,7 @@
-
-/*
- * stack.c
+/*!
+ * \file stack.c
  *
+ * \brief
  * This file reserves user accessable memory for application
  * stacks. Needed for OS initialization.
  */

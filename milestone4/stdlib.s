@@ -63,7 +63,7 @@ _InputDebugCharacter:
 ;int IsDebugCharacterAvailable(void);
 _IsDebugCharacterAvailable:
 	rts
-;void OutputDebugCharacter (short);
+;void OutputDebugCharacter (short character);
 _OutputDebugCharacter:
 	rts
 ;int IsDebugPortBusy(void);
