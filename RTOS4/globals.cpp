@@ -10,7 +10,6 @@
  * 
  */
 
-#include "rtos.h"
 #include "globals.h"
 
 /*!

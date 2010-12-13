@@ -13,7 +13,8 @@
 #include <tchar.h>
 #endif
 #include <windows.h>
-//#include "global_const.h
+#include "global_const.h"
+#include "../RTOS4/globals.h"
 
 #pragma warning ( disable : 4996 )
 
@@ -25,21 +26,15 @@ static HINSTANCE hInst;
 /*!
  * Windows Application Name for identification
  */
-static const TCHAR szAppName[] = _T("MBTestApp");
+static const TCHAR szAppName[] = _T("RTOS4App");
 
 /*!
  * Title of the main window
  */
-static const TCHAR szTitle[] = _T("MusicBox Test Application");
+static const TCHAR szTitle[] = _T("RTOS4 Test Application");
 
-/*!
- * Title of the MusicBox Window
- */
-static TCHAR MusicBoxTitle[] = _T("MusicBox");
 
 LRESULT CALLBACK WndProc (HWND, UINT, WPARAM, LPARAM);
-
-
 
 /*!
  * This is the entry point for all Windows programs. It is informed
@@ -120,6 +115,24 @@ int CALLBACK WinMain (HINSTANCE hInstance,
 	return msg.wParam;
 }
 
+/*!
+ *
+ * \brief
+ * This is the Window Procedure for the main window of this application.
+ * It processes all messages destined for this main window.
+ *
+ * \param HWND hwnd -
+ * \param HDC hdc -
+ * \param T *buffer - 
+ * \param T head -
+ * \param T tail -
+ * \param unsigned int count -
+ */
+template <typename X, typename T>
+void DrawCircularBuffer (HWND hwnd, HDC hdc, X *buffer, T head, T tail, unsigned int count)
+{
+
+}
 
 /*!
  *
@@ -145,6 +158,8 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 
 	case WM_PAINT:
 		hdc = BeginPaint (hwnd, &ps);
+		DrawCircularBuffer <short, unsigned char> 
+			(hwnd, hdc, keyboard_data, keyboard_head, keyboard_tail, sizeof (keyboard_data));
 		EndPaint (hwnd, &ps);
 		return 0;
 
@@ -153,7 +168,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 
 	case WM_CLOSE:
 		// Ask the user if they wish to exit
-		if (MessageBox (hwnd, _T("Are you sure you wish to quit?"),
+		if (MessageBox (hwnd, SureExit,
                         szTitle, MB_ICONSTOP | MB_YESNO) == IDYES) 
 		{
 			DestroyWindow (hwnd);

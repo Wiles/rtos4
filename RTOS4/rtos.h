@@ -26,6 +26,9 @@
 #define REASON_DEBUG_IN	3
 
 #define SUCCESS			0
+#ifdef ERROR
+#undef ERROR
+#endif
 #define ERROR			-1
 
 #define MAX_PDBS		2
@@ -110,7 +113,7 @@ typedef struct systemtime {
 	 int hour;
 	 int minute;
 	 int second;
-} SYSTEMTIME;
+} RTOS_SYSTEMTIME;
 
 #define __RTOS_H__
 #endif
