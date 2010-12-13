@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTOS4", "RTOS4.vcxproj", "{9239703B-DBD3-4D74-8262-3DCB536BF42F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTOS4_Test", "..\RTOS4_Test\RTOS4_Test.vcxproj", "{2EDCA162-02CD-4F14-B5F6-715B73C5ED0D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9239703B-DBD3-4D74-8262-3DCB536BF42F} = {9239703B-DBD3-4D74-8262-3DCB536BF42F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

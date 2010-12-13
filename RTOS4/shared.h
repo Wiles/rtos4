@@ -37,7 +37,10 @@
 #define BASS_GLOBAL_ADDRESS		10
 #define BASS_GETCLOCKTIME 		11
 
+#ifndef X86_TEST
 #define NULL					0L
+#endif
+
 #define TRUE					1
 #define FALSE					0
 

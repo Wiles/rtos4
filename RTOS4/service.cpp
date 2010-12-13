@@ -11,7 +11,6 @@
  * 
  */
 
-#include "shared.h"
 #include "rtos.h"
 #include "globals.h"
 
@@ -25,12 +24,8 @@
 void SupportBASS (void)
 {
 	/* Initialize our variables */
-	PDB *p;
 	unsigned long *ptrUSP;
 	int fSchedule;
-	int hr;
-	int min;
-	int sec;
 	struct systemtime *pTime;
 
 
@@ -114,7 +109,7 @@ void SupportBASS (void)
 		pdb_Current->RegD0 = gTickCount;
 		break;
 	case BASS_GLOBAL_ADDRESS:
-		pdb_Current->RegD0 = pdb_Current->PointerToGlobalSpace;
+		pdb_Current->RegD0 = (unsigned long)*pdb_Current->PointerToGlobalSpace;
 		break;
 	case BASS_GETCLOCKTIME:
 		/* grab the service parameters from the stack */
