@@ -1,0 +1,15 @@
+relre:^.*\.obj$
+relre:^.*\.tlog$
+relre:^.*\.ncb$
+relre:^.*\.exe$
+relre:^.*\.log$
+relre:^.*\.idb$
+relre:^.*\.pdb$
+relre:^.*\.sdf$
+relre:^.*\.suo$
+relre:^.*\.dll$
+relre:^.*\.ipch$
+relre:^.*\.lib$
+glob:WP_Project/Debug/WP_Project.ilk
+glob:WP_Project/WP_Project.opensdf
+glob:WP_Project/WP_Project/Debug/RCa05884
