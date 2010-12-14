@@ -14,22 +14,77 @@
 #include "rtos.h"
 #include "globals.h"
 
+void SupportBASS (void);
+
 short InputKeyboardCharacter(void)
 {
-	if (keyboard_head <= keyboard_tail)
-	{
-		if ((keyboard_head + 1) > keyboard_tail)
-		{
-			return '\0';
-		}
-	}
+	pdb_Current->RegD0 = BASS_GET_KEYBOARD;
 
-	short key = keyboard_data[keyboard_head];
-	keyboard_data[keyboard_head] = '\0';
+	SupportBASS();
 
-	keyboard_head++;
+	return (short)pdb_Current->RegD0;
+}
 
-	return key;
+int IsKeyboardCharacterAvailable(void)
+{
+	pdb_Current->RegD0 = BASS_KEYBOARD_STATUS;
+
+	SupportBASS();
+
+	return (int)pdb_Current->RegD0;
+}
+
+short InputDebugCharacter(void)
+{
+	pdb_Current->RegD0 = BASS_GET_DEBUG;
+
+	SupportBASS();
+
+	return (short)pdb_Current->RegD0;
+}
+
+int IsDebugCharacterAvailable(void)
+{
+	pdb_Current->RegD0 = BASS_DEBUG_IN_STATUS;
+
+	SupportBASS();
+
+	return (int)pdb_Current->RegD0;
+}
+
+void OutputDebugCharacter (short character)
+{
+	//TODO: void OutputDebugCharacter (short character)
+}
+
+int IsDebugPortBusy(void)
+{
+	pdb_Current->RegD0 = BASS_DEBUG_BUSY;
+
+	SupportBASS();
+
+	return (int)pdb_Current->RegD0;
+}
+
+unsigned long GetSystemTickCount(void)
+{
+	pdb_Current->RegD0 = BASS_TICK_COUNT;
+
+	SupportBASS();
+
+	return pdb_Current->RegD0;
+}
+
+unsigned long GetGlobalDataAddress(void)
+{
+	//TODO: unsigned long GetGlobalDataAddress(void)
+#define LOL 19
+	return LOL;
+}
+
+void GetClockTime(struct systemtime *stime)
+{
+	//TODO: void GetClockTime(struct systemtime *stime)
 }
 
  /*!
@@ -73,19 +128,29 @@ void SupportBASS (void)
 		pdb_Current->Reason = REASON_SLEEP;
 		fSchedule = TRUE;
 		break;
+
 	case BASS_GET_KEYBOARD:
-		if( keyboard_head != keyboard_tail)
+	{
+		if (keyboard_head <= keyboard_tail)
 		{
-			pdb_Current->RegD0 = keyboard_data[keyboard_tail];
-			++keyboard_tail;
+			if ((keyboard_head + 1) > keyboard_tail)
+			{
+				// Block user until key is avaliable
+				pdb_Current->Status = BLOCKED;
+				pdb_Current->Reason = REASON_KEYBOARD;
+				fSchedule = TRUE;
+				break;
+			}
 		}
-		else
-		{
-			pdb_Current->Status = BLOCKED;
-			pdb_Current->Reason = REASON_KEYBOARD;
-			fSchedule = TRUE;
-		}
+
+		short key = keyboard_data[keyboard_head];
+		keyboard_data[keyboard_head] = '\0';
+
+		keyboard_head++;
+
+		pdb_Current->RegD0 = key;
 		break;
+	}
 	case BASS_KEYBOARD_STATUS:
 		if( keyboard_head != keyboard_tail )
 		{
@@ -97,18 +162,26 @@ void SupportBASS (void)
 		}
 		break;
 	case BASS_GET_DEBUG:
-		if( serial_in_head != serial_in_tail )
+	{
+		if (serial_in_head <= serial_in_tail)
 		{
-			pdb_Current->RegD0 = serial_in_data[serial_in_tail];
-			++serial_in_tail;
+			if ((serial_in_head + 1) > serial_in_tail)
+			{
+				// Block user until key is avaliable
+				pdb_Current->Status = BLOCKED;
+				pdb_Current->Reason = REASON_KEYBOARD;
+				fSchedule = TRUE;
+				break;
+			}
 		}
-		else
-		{
-			pdb_Current->Status = BLOCKED;
-			pdb_Current->Reason = REASON_DEBUG_IN;
-			fSchedule = TRUE;
-		}
+
+		short key = serial_in_data[serial_in_head];
+		serial_in_data[serial_in_head] = '\0';
+
+		serial_in_head++;
+
 		break;
+	}
 	case BASS_DEBUG_IN_STATUS:
 		if( serial_in_head != serial_in_tail )
 		{
@@ -120,8 +193,10 @@ void SupportBASS (void)
 		}
 		break;
 	case BASS_WRITE_DEBUG:
+		//TODO: BASS_WRITE_DEBUG
 		break;
 	case BASS_DEBUG_BUSY:
+		//TODO: BASS_WRITE_DEBUG
 		break;
 	case BASS_TICK_COUNT:
 		pdb_Current->RegD0 = gTickCount;

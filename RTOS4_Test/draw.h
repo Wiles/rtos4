@@ -70,22 +70,15 @@ void DrawCircularBuffer (HWND hwnd, HDC hdc, X *cirbuffer, T head, T tail, unsig
 		brush = CreateBrushIndirect (&logbrush);
 		SelectObject (hdc, brush);
 
-		MoveToEx (hdc, rect.right, rect.top, NULL);
-		LineTo (hdc, rect.right, rect.bottom + 10);
+		MoveToEx (hdc, rect.right - 1, rect.top - 1, NULL);
+		LineTo (hdc, rect.right - 1, rect.bottom - 1);
 
 		DeleteObject (brush);
 
 		char buffer[512];
-		if (i == '\0')
-		{
-			sprintf (buffer, "%d", i);
-		}
-		else
-		{
-			sprintf (buffer, "%d", cirbuffer [i]);
-		}
+		sprintf (buffer, "%d", cirbuffer [i]);
 
-		ExtTextOut (hdc, rect.left, rect.top, 0, &rect, buffer, strlen (buffer), NULL);
+		ExtTextOut (hdc, rect.left + 1, rect.top, 0, &rect, buffer, strlen (buffer), NULL);
 
 		rect.left += w;
 		rect.right += w;
@@ -93,7 +86,7 @@ void DrawCircularBuffer (HWND hwnd, HDC hdc, X *cirbuffer, T head, T tail, unsig
 		if (rect.right > bounds.right)
 		{
 			rect.left = x;
-			rect.right = x;
+			rect.right = x + w;
 			rect.top += h;
 			rect.bottom += h;
 		}

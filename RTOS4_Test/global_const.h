@@ -21,7 +21,12 @@ extern const TCHAR *SureExit;
 #define KEYBOARD_IN "Keyboard"
 #define SERIAL_IN "SerialIn"
 #define SERIAL_OUT "SerialOut"
+#define OTHER "Other"
 
+
+/*!
+ *
+ */
 enum WmCommandIdentifers
 {
 	/*!
@@ -38,21 +43,49 @@ enum WmCommandIdentifers
 	/*!
 	 * 
 	 */
-	IDC_VIEW_SERIAL_OUT_BUFFER
+	IDC_VIEW_SERIAL_OUT_BUFFER,
+
+	/*!
+	 *
+	 */
+	IDC_VIEW_OTHER
 };
 
+/*!
+ *
+ */
 enum Views
 {
 	/*!
 	 *
 	 */
 	VIEW_KEYBOARD_BUFFER = 0,
-
+	
+	/*!
+	 *
+	 */
 	VIEW_SERIAL_IN_BUFFER,
+	
+	/*!
+	 *
+	 */
+	VIEW_SERIAL_OUT_BUFFER,
 
-	VIEW_SERIAL_OUT_BUFFER
+	/*!
+	 *
+	 */
+	VIEW_OTHER
 };
 
+
+/*!
+ *
+ */
+#define IDT_INTERRUPT_7 101
+
+/*!
+ *
+ */
 typedef struct RTOSTESTDATA
 {
 	/*!
