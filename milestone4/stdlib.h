@@ -91,17 +91,17 @@ unsigned long GetSystemTickCount(void);
 
 /*!
  * \brief
- * HEKAR TODO: FILL IN THIS COMMENT
+ * Returns that Address of the calling tasks global data
  * \return
- *	
+ *	Address to tasks global data
  */
 unsigned long GetGlobalDataAddress(void);
 
 /*!
  * \brief
- * HEKAR TODO: FILL IN THIS COMMENT
+ * Returns the system tick count formated into hours, minutes, and seconds
  * \return
- *	
+ *	systemtime struct for tick count information
  */
 void GetClockTime(struct systemtime *);
 
