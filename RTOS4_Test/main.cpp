@@ -127,11 +127,48 @@ int CALLBACK WinMain (HINSTANCE hInstance,
  * \param T head -
  * \param T tail -
  * \param unsigned int count -
+ * \param x -
+ * \param y -
+ * \param w -
+ * \param h - 
  */
 template <typename X, typename T>
-void DrawCircularBuffer (HWND hwnd, HDC hdc, X *buffer, T head, T tail, unsigned int count)
+void DrawCircularBuffer (HWND hwnd, HDC hdc, X *buffer, T head, T tail, unsigned int count, 
+		int x = 0, int y = 0, int w = 32, int h = 32)
 {
+	RECT rect = {x, y, x + w, y + h};
+	for (unsigned int i = 0; i < count; i++)
+	{
+		LOGBRUSH logbrush;
+		if (i == head)
+		{
+			logbrush.lbHatch = BS_HATCHED;
+			logbrush.lbColor = GREEN;
+			logbrush.lbStyle = HS_BDIAGONAL;
+		}
+		else if (i == tail)
+		{
+			logbrush.lbHatch = BS_HATCHED;
+			logbrush.lbColor = RED;
+			logbrush.lbStyle = HS_BDIAGONAL;
+		}
+		else
+		{
+			logbrush.lbHatch = BS_SOLID;
+			logbrush.lbColor = BLACK;
+			logbrush.lbStyle = HS_BDIAGONAL;
+		}
+		
+		HBRUSH brush = CreateBrushIndirect (&logbrush);
+		SelectObject (hdc, brush);
 
+		FillRect (hdc, &rect, brush);
+
+		DeleteObject (brush);
+
+		rect.left += w;
+		rect.right += w;
+	}
 }
 
 /*!
@@ -161,6 +198,10 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		DrawCircularBuffer <short, unsigned char> 
 			(hwnd, hdc, keyboard_data, keyboard_head, keyboard_tail, sizeof (keyboard_data));
 		EndPaint (hwnd, &ps);
+		return 0;
+	
+	case WM_KEYDOWN:
+		InvalidateRect (hwnd, NULL, TRUE);
 		return 0;
 
 	case WM_COMMAND:
