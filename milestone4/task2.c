@@ -39,19 +39,14 @@ TASK taskTask2 = {
 void
 Task2_main (void)
 {
+	/*
+	 * For testing purposes this task gets the system
+	 * tick count form the OS and outputs the lower byte of that
+	 * data to the LEDs
+	 */
 	unsigned char i = GetSystemTickCount();
 	unsigned char *p = (unsigned char *)0x0000E013L;
 	
-	/*
-	 * the manipulation of the counter i, and the
-	 * pointer p, is done JUST FOR DEMO PURPOSES.
-	 * REMEMBER ... a user level task MUST NOT TOUCH
-	 * hardware directly! In the future, stuff like that
-	 * will be handled via an OS service!
-	 *
-	 * We use the counter and every time the low bit flips
-	 * (once per Sleep period), we flash the 2nd 7 segment LED.
-	 */
 
 	while (1) {
 		i = (char)GetSystemTickCount();

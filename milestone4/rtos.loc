@@ -3,7 +3,7 @@ output=rtos.asm
 segments=code,bss,stack
 [code]
 base=00FC0000
-files=vector.s,romconst.s,bootstrap.s,ossupport.s,ipl6.s,trap.s,osinit.asm,timer.asm,service.asm,support.asm,task1.asm,task2.asm,stdlib.s
+files=vector.s,romconst.s,bootstrap.s,ossupport.s,ipl6.s,trap.s,osinit.asm,timer.asm,service.asm,support.asm,task1.asm,task2.asm,stdlib.s,MULDIV.ASM
 [bss]
 base=00000400
 files=globals.asm

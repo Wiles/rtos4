@@ -49,42 +49,96 @@ _Sleep:
 	trap	#1
 	rts
 
+;
 ;short InputKeyboardCharacter(void);
+;
+; Asks the OS for a character from the keyboard
+; Task is blocked if no characters are available
+;
 _InputKeyboardCharacter:
+	move.l #BASS_GET_KEYBOARD, d0
+	trap #1
 	rts
+;
 ;int IsKeyboardCharacterAvailable(void);
+; 
+; Asks the OS if there are any characters
+; In the keyboard buffer
+;
 _IsKeyboardCharacterAvailable:
 	move.l #BASS_KEYBOARD_STATUS, d0
 	trap #1
 	rts
-;short InputDebugCharacter(void);
-_InputDebugCharacter:
-	rts
-;int IsDebugCharacterAvailable(void);
-_IsDebugCharacterAvailable:
-	rts
-;void OutputDebugCharacter (short character);
-_OutputDebugCharacter:
-	rts
-;int IsDebugPortBusy(void);
-_IsDebugPortBusy:
-	rts
-;unsigned long GetSystemTickCount(void);
-_GetSystemTickCount:
-	move.l #BASS_TICK_COUNT, d0
-	trap #1
 	
-	rts
-;unsigned long GetGlobalDataAddress(void);
-_GetGlobalDataAddress:
+;
+;short InputDebugCharacter(void);
+;
+; Asks the OS for a character from the debug buffer
+; Task is blocked if no characters are available
+;
+_InputDebugCharacter:
+	move.l #BASS_GET_DEBUG, d0
+	trap #1
 	rts
 
+;
+;int IsDebugCharacterAvailable(void);
+;
+; Asks the OS if there are any characters
+; In the debug buffer
+;
+_IsDebugCharacterAvailable:
+	move.l #BASS_DEBUG_IN_STATUS, d0
+	trap #1
+	rts
+	
+;
+;void OutputDebugCharacter (short character);
+;
+; Asks the OS to output the provided character to the
+; Debug port
+;
+_OutputDebugCharacter:
+	move.l #BASS_WRITE_DEBUG, d0
+	trap #1
+	rts
+
+;
+;int IsDebugPortBusy(void);
+;
+; Ask the OS if the debug port is ready for data
+;
+_IsDebugPortBusy:
+	move.l #BASS_DEBUG_BUSY, d0
+	trap #1
+	rts
+	
+;
+;unsigned long GetSystemTickCount(void);
+;
+; Ask the OS for the number of Tick counts since
+; start up.
+;
+_GetSystemTickCount:
+	move.l #BASS_TICK_COUNT, d0
+	trap #1	
+	rts
+	
+;
+;unsigned long GetGlobalDataAddress(void);
+;
+; Asks the OS for the tasks global data address
+;
+_GetGlobalDataAddress:
+	move.l #BASS_GLOBAL_ADDRESS, d0
+	trap #1
+	rts
+	
 ;void GetClockTime(struct systemtime *);
 ;
 ;This wrapper will get the current clock time
 ;It will the passed to a time struct and the time extracted 
 ; as minutes, hours, and seconds
-
 _GetClockTime:
 	move.l #BASS_GETCLOCKTIME, d0                     
 	trap   #1

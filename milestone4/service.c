@@ -28,9 +28,6 @@ void SupportBASS (void)
 	PDB *p;
 	unsigned long *ptrUSP;
 	int fSchedule;
-	int hr;
-	int min;
-	int sec;
 	struct systemtime *pTime;
 
 
@@ -119,13 +116,9 @@ void SupportBASS (void)
 	case BASS_GETCLOCKTIME:
 		/* grab the service parameters from the stack */
 		pTime = (struct systemtime *) ptrUSP[0];
-		/* TODO: FIX DIVISION FOR THE TWO OPERATIONS BELOW */
-		/* we will use gTickCount/3 to mimic the actual hour */
-		/*	pTime->hour = gTickCount / 3; */
-		/* we will use gTickCount/2 to mimic the actual minute */
-		/* pTime->minute = gTickCount / 2; */
-		/* we will use gTickCount to mimic the actual second */
-		pTime->second = gTickCount;
+		pTime->hour = gTickCount / 3600;
+		pTime->minutes = ( gTickCount - (pTime->hour * 3600) ) / 60; 
+		pTime->second = gTickCount % 60;
 		break;
 	default:
 		pdb_Current->RegD0 = ERROR;
