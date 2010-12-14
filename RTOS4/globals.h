@@ -21,15 +21,18 @@ extern unsigned long gTickCount;
 
 extern char application_stack_memory[TOTAL_STACK_MEMORY];
 
-extern short keyboard_data[256];
+#define KEYBOARD_DATA_SIZE 256
+extern short keyboard_data[KEYBOARD_DATA_SIZE];
 extern unsigned char keyboard_head;
 extern unsigned char keyboard_tail;
 
-extern short serial_in_data[256];
+#define SERIAL_DATA_SIZE 256
+extern short serial_in_data[SERIAL_DATA_SIZE];
 extern unsigned char serial_in_head;
 extern unsigned char serial_in_tail;
 
-extern short serial_out_data[256];
+#define SERIAL_OUT_DATA_SIZE 256
+extern short serial_out_data[SERIAL_OUT_DATA_SIZE];
 extern unsigned char serial_out_head;
 extern unsigned char serial_out_tail;
 

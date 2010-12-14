@@ -16,12 +16,49 @@ extern const TCHAR *SureExit;
 #define GREY RGB (192, 192, 192)
 #define BLACK RGB (0, 0, 0)
 
+#define VIEW_BUTTON_SIZE 120
+
+#define KEYBOARD_IN "Keyboard"
+#define SERIAL_IN "SerialIn"
+#define SERIAL_OUT "SerialOut"
+
 enum WmCommandIdentifers
 {
 	/*!
-	 * Identifier for exit command
+	 * Identifier for selecting the keyboard 
+	 * as the current view.
 	 */
+	IDC_VIEW_KEYBOARD_BUFFER = 100,
 
+	/*!
+	 * 
+	 */
+	IDC_VIEW_SERIAL_IN_BUFFER,
+
+	/*!
+	 * 
+	 */
+	IDC_VIEW_SERIAL_OUT_BUFFER
 };
+
+enum Views
+{
+	/*!
+	 *
+	 */
+	VIEW_KEYBOARD_BUFFER = 0,
+
+	VIEW_SERIAL_IN_BUFFER,
+
+	VIEW_SERIAL_OUT_BUFFER
+};
+
+typedef struct RTOSTESTDATA
+{
+	/*!
+	 *
+	 */
+	int CurrentView;
+} RTOSTESTDATA;
 
 #endif // GLOBAL_CONST_H

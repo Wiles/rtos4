@@ -28,6 +28,11 @@ PDB *pdb_Current;
 PDB *pdb_First;
 
 /*!
+ * Stack memory for the OS
+ */
+char application_stack_memory[TOTAL_STACK_MEMORY];
+
+/*!
  * keep track of # of timer interrupts - a crude clock!
  */
 unsigned long gTickCount;

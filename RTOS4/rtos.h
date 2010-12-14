@@ -100,9 +100,10 @@ typedef struct pdb {
  * common RTOS C level functions
  */
 
-extern void rtos_memcopy (char *dest, char *src, int numBytes);
+extern void rtos_memcopy (unsigned char *dest, unsigned char *src, int numBytes);
 extern void RoundRobinScheduler (void);
 extern char *rtos_strcpy (char *dest, char *src);
+extern void InitOS (void);
 extern int InitializePDB (int taskID, PDB *p, TASK *t, char *stack, unsigned long initVal);
 
 /*

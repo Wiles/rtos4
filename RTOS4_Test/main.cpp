@@ -9,11 +9,13 @@
  *	them out.
  */
 
-#ifndef UNDER_CE
-#include <tchar.h>
-#endif
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
 #include <windows.h>
 #include "global_const.h"
+#include "draw.h"
 #include "../RTOS4/globals.h"
 
 #pragma warning ( disable : 4996 )
@@ -26,12 +28,12 @@ static HINSTANCE hInst;
 /*!
  * Windows Application Name for identification
  */
-static const TCHAR szAppName[] = _T("RTOS4App");
+static const char szAppName[] = "RTOS4App";
 
 /*!
  * Title of the main window
  */
-static const TCHAR szTitle[] = _T("RTOS4 Test Application");
+static const char szTitle[] = "RTOS4 Test Application";
 
 
 LRESULT CALLBACK WndProc (HWND, UINT, WPARAM, LPARAM);
@@ -50,28 +52,13 @@ LRESULT CALLBACK WndProc (HWND, UINT, WPARAM, LPARAM);
  * \return
  *	Operating system return code
  */
-#ifdef UNDER_CE
-int CALLBACK WinMain (HINSTANCE hInstance, 
-	HINSTANCE hPrevInstance, LPTSTR lpszCmdParam, int nCmdShow)
-#else
 int CALLBACK WinMain (HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
-#endif
 {
 	HWND hwnd;
 	MSG msg;
 	WNDCLASS wndclass;
 	long style;
-
-#ifdef UNDER_CE
-	// Find this window and bring it to the foreground
-	// Hack to make the window show up on Windows CE
-	if ((hwnd = FindWindow (szAppName, NULL)) != NULL) 
-	{
-		SetForegroundWindow ((HWND)((ULONG) hwnd | 0x01));
-		return 0;
-	}
-#endif
 
 	// proceed with WNDCLASS registration
 	if (!hPrevInstance) 
@@ -121,62 +108,6 @@ int CALLBACK WinMain (HINSTANCE hInstance,
  * This is the Window Procedure for the main window of this application.
  * It processes all messages destined for this main window.
  *
- * \param HWND hwnd -
- * \param HDC hdc -
- * \param T *buffer - 
- * \param T head -
- * \param T tail -
- * \param unsigned int count -
- * \param x -
- * \param y -
- * \param w -
- * \param h - 
- */
-template <typename X, typename T>
-void DrawCircularBuffer (HWND hwnd, HDC hdc, X *buffer, T head, T tail, unsigned int count, 
-		int x = 0, int y = 0, int w = 32, int h = 32)
-{
-	RECT rect = {x, y, x + w, y + h};
-	for (unsigned int i = 0; i < count; i++)
-	{
-		LOGBRUSH logbrush;
-		if (i == head)
-		{
-			logbrush.lbHatch = BS_HATCHED;
-			logbrush.lbColor = GREEN;
-			logbrush.lbStyle = HS_BDIAGONAL;
-		}
-		else if (i == tail)
-		{
-			logbrush.lbHatch = BS_HATCHED;
-			logbrush.lbColor = RED;
-			logbrush.lbStyle = HS_BDIAGONAL;
-		}
-		else
-		{
-			logbrush.lbHatch = BS_SOLID;
-			logbrush.lbColor = BLACK;
-			logbrush.lbStyle = HS_BDIAGONAL;
-		}
-		
-		HBRUSH brush = CreateBrushIndirect (&logbrush);
-		SelectObject (hdc, brush);
-
-		FillRect (hdc, &rect, brush);
-
-		DeleteObject (brush);
-
-		rect.left += w;
-		rect.right += w;
-	}
-}
-
-/*!
- *
- * \brief
- * This is the Window Procedure for the main window of this application.
- * It processes all messages destined for this main window.
- *
  * \param HWND hwnd - Handle to window
  * \param UINT message - Message identifier
  * \param WPARAM wParam - wParam
@@ -186,25 +117,109 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 	WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
+	RECT bounds;
 	HDC hdc;
+	RTOSTESTDATA *pData;
 
 	switch (message)
 	{
 	case WM_CREATE:
+		InitOS ();
+
+		pData = (RTOSTESTDATA *)malloc (sizeof (RTOSTESTDATA));
+		if (pData == NULL)
+			return -1;
+
+		SetWindowLong (hwnd, GWL_USERDATA, (LONG)pData);
+
+		pData->CurrentView = VIEW_KEYBOARD_BUFFER;
+
+		CreateWindow ("BUTTON", KEYBOARD_IN, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
+			0, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_KEYBOARD_BUFFER, hInst, NULL);
+		CreateWindow ("BUTTON", SERIAL_IN, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
+			VIEW_BUTTON_SIZE, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_SERIAL_IN_BUFFER, hInst, NULL);
+		CreateWindow ("BUTTON", SERIAL_OUT, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
+			VIEW_BUTTON_SIZE * 2, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_SERIAL_OUT_BUFFER, hInst, NULL);
+		CreateWindow ("BUTTON", KEYBOARD_IN, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
+			VIEW_BUTTON_SIZE * 3, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_KEYBOARD_BUFFER, hInst, NULL);
+
+		CheckDlgButton (hwnd, IDC_VIEW_KEYBOARD_BUFFER, TRUE);
+
 		return 0;
 
 	case WM_PAINT:
+		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
+		if (pData == NULL)
+			return -1;
+
+		GetClientRect (hwnd, &bounds);
+
 		hdc = BeginPaint (hwnd, &ps);
-		DrawCircularBuffer <short, unsigned char> 
-			(hwnd, hdc, keyboard_data, keyboard_head, keyboard_tail, sizeof (keyboard_data));
+		switch (pData->CurrentView)
+		{
+		case VIEW_KEYBOARD_BUFFER:
+			DrawCircularBuffer <short, unsigned char> 
+				(hwnd, hdc, keyboard_data, keyboard_head, keyboard_tail, ARRAYSIZE(keyboard_data), 0, 32, 32, 32);
+			break;
+		case VIEW_SERIAL_IN_BUFFER:
+			DrawCircularBuffer <short, unsigned char> 
+				(hwnd, hdc, serial_in_data, serial_in_head, serial_in_tail, ARRAYSIZE(serial_in_data), 0, 32, 32, 32);
+			break;
+		case VIEW_SERIAL_OUT_BUFFER:
+			DrawCircularBuffer <short, unsigned char> 
+				(hwnd, hdc, serial_out_data, serial_out_head, serial_out_tail, ARRAYSIZE(serial_out_data), 0, 32, 32, 32);
+			break;
+		}
 		EndPaint (hwnd, &ps);
 		return 0;
 	
-	case WM_KEYDOWN:
-		InvalidateRect (hwnd, NULL, TRUE);
-		return 0;
-
 	case WM_COMMAND:
+		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
+		if (pData == NULL)
+			return -1;
+
+
+		switch (wParam)
+		{
+		case IDC_VIEW_KEYBOARD_BUFFER:
+			pData->CurrentView = VIEW_KEYBOARD_BUFFER;
+			break;
+		case IDC_VIEW_SERIAL_IN_BUFFER:
+			pData->CurrentView = VIEW_SERIAL_IN_BUFFER;
+			break;
+		case IDC_VIEW_SERIAL_OUT_BUFFER:
+			pData->CurrentView = VIEW_SERIAL_OUT_BUFFER;
+			break;
+		}
+		
+		InvalidateRect (hwnd, NULL, TRUE);
+
+		return 0;
+	
+	case WM_KEYDOWN:
+		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
+		if (pData == NULL)
+			return -1;
+
+		switch (pData->CurrentView)
+		{
+		case VIEW_KEYBOARD_BUFFER:
+			if (wParam == VK_DELETE)
+			{
+				InputKeyboardCharacter();
+			}
+			else
+			{
+				keyboard_data[keyboard_tail++] = wParam;
+			}
+			break;
+		case VIEW_SERIAL_IN_BUFFER:
+			break;
+		case VIEW_SERIAL_OUT_BUFFER:
+			break;
+		}
+
+		InvalidateRect (hwnd, NULL, TRUE);
 		return 0;
 
 	case WM_CLOSE:

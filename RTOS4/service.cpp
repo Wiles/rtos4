@@ -14,6 +14,24 @@
 #include "rtos.h"
 #include "globals.h"
 
+short InputKeyboardCharacter(void)
+{
+	if (keyboard_head <= keyboard_tail)
+	{
+		if ((keyboard_head + 1) > keyboard_tail)
+		{
+			return '\0';
+		}
+	}
+
+	short key = keyboard_data[keyboard_head];
+	keyboard_data[keyboard_head] = '\0';
+
+	keyboard_head++;
+
+	return key;
+}
+
  /*!
   * \brief Service call handler for RTOS
   * \remark
