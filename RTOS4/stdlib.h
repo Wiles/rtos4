@@ -16,7 +16,9 @@
  * \brief
  * Give up the CPU for a single re-scheduling
  */
+#ifndef X86_TEST
 void Relinquish (void);
+#endif
 
 /*!
  * \brief
