@@ -132,6 +132,9 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 
 		SetWindowLong (hwnd, GWL_USERDATA, (LONG)pData);
 
+		// Enable the interrupt timer
+		SetTimer (hwnd, IDT_INTERRUPT_7, 1000, NULL);
+
 		pData->CurrentView = VIEW_KEYBOARD_BUFFER;
 
 		CreateWindow ("BUTTON", KEYBOARD_IN, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
@@ -140,8 +143,8 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 			VIEW_BUTTON_SIZE, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_SERIAL_IN_BUFFER, hInst, NULL);
 		CreateWindow ("BUTTON", SERIAL_OUT, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
 			VIEW_BUTTON_SIZE * 2, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_SERIAL_OUT_BUFFER, hInst, NULL);
-		CreateWindow ("BUTTON", KEYBOARD_IN, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
-			VIEW_BUTTON_SIZE * 3, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_KEYBOARD_BUFFER, hInst, NULL);
+		CreateWindow ("BUTTON", OTHER, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
+			VIEW_BUTTON_SIZE * 3, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_OTHER, hInst, NULL);
 
 		CheckDlgButton (hwnd, IDC_VIEW_KEYBOARD_BUFFER, TRUE);
 
@@ -169,6 +172,13 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 			DrawCircularBuffer <short, unsigned char> 
 				(hwnd, hdc, serial_out_data, serial_out_head, serial_out_tail, ARRAYSIZE(serial_out_data), 0, 32, 32, 32);
 			break;
+		case VIEW_OTHER:
+		{
+			char buffer[512];
+			sprintf (buffer, "TickCount: %u", GetSystemTickCount());
+			ExtTextOut (hdc, 0, 40, 0, NULL, buffer, strlen (buffer), NULL);
+			break;
+		}
 		}
 		EndPaint (hwnd, &ps);
 		return 0;
@@ -177,7 +187,6 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
 		if (pData == NULL)
 			return -1;
-
 
 		switch (wParam)
 		{
@@ -190,11 +199,28 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		case IDC_VIEW_SERIAL_OUT_BUFFER:
 			pData->CurrentView = VIEW_SERIAL_OUT_BUFFER;
 			break;
+		case IDC_VIEW_OTHER:
+			pData->CurrentView = VIEW_OTHER;
+			break;
 		}
 		
+		SetFocus (hwnd);
 		InvalidateRect (hwnd, NULL, TRUE);
 
 		return 0;
+
+	case WM_TIMER:
+		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
+		if (pData == NULL)
+			return -1;
+
+		if (pData->CurrentView == VIEW_OTHER)
+		{
+			InvalidateRect (hwnd, NULL, TRUE);
+		}
+
+		gTickCount++;
+		break;
 	
 	case WM_KEYDOWN:
 		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
@@ -214,8 +240,26 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 			}
 			break;
 		case VIEW_SERIAL_IN_BUFFER:
+			if (wParam == VK_DELETE)
+			{
+				InputDebugCharacter();
+			}
+			else
+			{
+				serial_in_data[serial_in_tail++] = wParam;
+			}
 			break;
 		case VIEW_SERIAL_OUT_BUFFER:
+			if (wParam == VK_DELETE)
+			{
+			}
+			else
+			{
+				serial_out_data[serial_out_tail++] = wParam;
+			}
+			break;
+		case VIEW_OTHER:
+
 			break;
 		}
 
@@ -232,6 +276,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		return 0;
 
 	case WM_DESTROY:
+		KillTimer (hwnd, IDT_INTERRUPT_7);
 		PostQuitMessage (0);
 		return 0;
 	}
