@@ -8,6 +8,9 @@
 ; as the wrappers must invoke a TRAP instruction, which can only
 ; be done in assembly.
 ;
+; History:
+;  Added BASS service numbers. And ASM wrappers
+;
 
 BASS_RELINQUISH			equ 1
 BASS_SLEEP				equ 2

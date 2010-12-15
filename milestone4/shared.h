@@ -18,17 +18,49 @@
  
 #ifndef __SHARED_H__
 
-
+/*!
+ * \brief Relenquish cpu to another task
+ */
 #define BASS_RELINQUISH			1
+/*!
+ * \brief Sleep for provided number of seconds
+ */
 #define BASS_SLEEP				2
+/*!
+ * \brief get a keyboard character
+ */
 #define BASS_GET_KEYBOARD		3
+/*!
+ * \brief Is there available information in keyboard buffer
+ */
 #define BASS_KEYBOARD_STATUS	4
+/*!
+ * \brief get a debug character
+ */
 #define BASS_GET_DEBUG			5
+/*!
+ * \brief Is there available information in debug buffer
+ */
 #define BASS_DEBUG_IN_STATUS	6
+/*!
+ * \brief write provided character to debug port
+ */
 #define BASS_WRITE_DEBUG		7
+/*!
+ * \brief is the debug port busy
+ */
 #define BASS_DEBUG_BUSY			8
+/*!
+ * \brief retreive system tick count
+ */
 #define BASS_TICK_COUNT			9
+/*!
+ * \brief retrieve task global memory address
+ */
 #define BASS_GLOBAL_ADDRESS		10
+/*!
+ * \brief get tick count formated into time
+ */
 #define BASS_GETCLOCKTIME 		11
 
 

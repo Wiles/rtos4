@@ -152,7 +152,7 @@ InitializePDB (int taskID, PDB *p, TASK *t, char *pStack, unsigned long initVal)
 
 	/* TODO: in the future, allocate space for globals and set pointer! */
 	p->AmountOfGlobalSpace = t->AmountOfGlobalSpace;
-	p->PointerToGlobalSpace = NULL;
+	p->PointerToGlobalSpace = 0x5L;
 
 	/* TODO: in the future, if pStack is NULL, allocate stack dynamically */
 	p->AmountOfStackSpace = t->AmountOfStackSpace;
