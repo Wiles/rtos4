@@ -44,6 +44,7 @@
 #define BASS_DEBUG_IN_STATUS	6
 /*!
  * \brief write provided character to debug port
+ * D1 - Character to write
  */
 #define BASS_WRITE_DEBUG		7
 /*!
@@ -60,6 +61,7 @@
 #define BASS_GLOBAL_ADDRESS		10
 /*!
  * \brief get tick count formated into time
+ * A1 - Time struct
  */
 #define BASS_GETCLOCKTIME 		11
 

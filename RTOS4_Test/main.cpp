@@ -11,6 +11,23 @@
  *  Visual 68k simulation based project.
  */
 
+/*! \mainpage My Personal Index Page
+ *
+ * \section RTOS4 "RTOS Four"
+ * \subsection RTOS4Milestone "RTOS Four Milestone"
+ *	Default simulation under Visual 68k
+ *
+ * \subsection RTOS4Test "RTOS Four Windows Test Application"
+ *	Test application for RTOS Milestone 4. This application
+ *  allows us to simulate the theoretical functions
+ *  that Team #1 was designated with. Not all the functionality
+ *  is in this Windows application. We saw that it was not a 
+ *  wise idea to do that. Those functions are in the 
+ *  Visual 68k simulation based project.
+ *
+ *	Samuel Lewis, Dan Evans, Adrian Hyde, Hekar Khani
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -295,13 +312,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 			}
 			break;
 		case VIEW_SERIAL_OUT_BUFFER:
-			if (wParam == VK_DELETE)
-			{
-			}
-			else
-			{
-				serial_out_data[serial_out_tail++] = wParam;
-			}
+			OutputDebugCharacter (wParam);
 			break;
 		case VIEW_OTHER:
 

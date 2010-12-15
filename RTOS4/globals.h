@@ -31,6 +31,8 @@ extern short serial_in_data[SERIAL_DATA_SIZE];
 extern unsigned char serial_in_head;
 extern unsigned char serial_in_tail;
 
+extern int serial_out_blocked;
+
 #define SERIAL_OUT_DATA_SIZE 256
 extern short serial_out_data[SERIAL_OUT_DATA_SIZE];
 extern unsigned char serial_out_head;
