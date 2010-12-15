@@ -17,7 +17,7 @@
 
 void SupportBASS (void);
 
-void RoundRobinScheduler()
+void RoundRobinScheduler(void)
 {
 	PDB *pdb = pdb_Current;
 	int scheduling = TRUE;
@@ -47,6 +47,11 @@ void RoundRobinScheduler()
 		
 		pdb_Current = pdb;
 	}
+}
+
+void DebugOutputInterrupt(void)
+{
+
 }
 
 short InputKeyboardCharacter(void)
@@ -175,6 +180,9 @@ void SupportBASS (void)
 			}
 		}
 
+		pdb_Current->Status = READY;
+		pdb_Current->Reason = 0;
+
 		short key = keyboard_data[keyboard_head];
 		keyboard_data[keyboard_head] = '\0';
 
@@ -201,10 +209,13 @@ void SupportBASS (void)
 			{
 				// Block user until key is avaliable
 				pdb_Current->Status = BLOCKED;
-				pdb_Current->Reason = REASON_KEYBOARD;
+				pdb_Current->Reason = REASON_DEBUG_IN;
 				break;
 			}
 		}
+
+		pdb_Current->Status = READY;
+		pdb_Current->Reason = 0;
 
 		short key = serial_in_data[serial_in_head];
 		serial_in_data[serial_in_head] = '\0';
