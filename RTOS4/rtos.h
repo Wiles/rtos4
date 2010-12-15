@@ -33,6 +33,12 @@
  */
 #define REASON_DEBUG_IN	3
 
+/*!
+ * Blocked, because waiting on
+ * debugging output
+ */
+#define REASON_DEBUG_OUT 4
+
 #define SUCCESS			0
 #ifdef ERROR
 #undef ERROR

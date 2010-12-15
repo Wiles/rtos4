@@ -54,6 +54,11 @@ void RoundRobinScheduler(void)
 				InputDebugCharacter();
 				scheduling = FALSE;
 				break;
+			case REASON_DEBUG_OUT:
+				//Program is no longer blocked?
+				//OutputDebugCharacter( pdb_Current->RegD7 + sizeof( long) );
+				scheduling = FALSE;
+				break;
 			}
 		}
 		else
@@ -73,11 +78,19 @@ void RoundRobinScheduler(void)
  */
 void DebugOutputInterrupt(void)
 {
+	if (serial_out_blocked || (serial_out_head != serial_out_tail))
+	{
+		short key = serial_out_data[serial_out_head];
+		serial_out_data[serial_out_head] = '\0';
 
+		serial_out_head++;
+
+		serial_out_blocked = FALSE;
+	}
 }
 
 short InputKeyboardCharacter(void)
-{
+{	
 	pdb_Current->RegD0 = BASS_GET_KEYBOARD;
 
 	SupportBASS();
@@ -114,7 +127,12 @@ int IsDebugCharacterAvailable(void)
 
 void OutputDebugCharacter (short character)
 {
-	//TODO: void OutputDebugCharacter (short character)
+	serial_out_data[serial_out_tail] = character;
+
+	pdb_Current->RegD0 = BASS_WRITE_DEBUG;
+	pdb_Current->RegD1 = character;
+
+	SupportBASS();
 }
 
 int IsDebugPortBusy(void)
@@ -243,10 +261,32 @@ void SupportBASS (void)
 		}
 		break;
 	case BASS_WRITE_DEBUG:
-		//TODO: BASS_WRITE_DEBUG
+		if( serial_out_blocked == TRUE )
+		{
+			// Block user until key is avaliable
+			pdb_Current->Status = BLOCKED;
+			pdb_Current->Reason = REASON_DEBUG_OUT;
+			break;				
+		}
+		else
+		{
+			if (serial_out_tail + 1 == serial_out_head)
+			{
+				// Block user until debugger has outputed
+				pdb_Current->Status = BLOCKED;
+				pdb_Current->Reason = REASON_DEBUG_OUT;
+				serial_out_blocked = TRUE;
+				return;
+			}
+			else
+			{
+				serial_out_data[serial_out_tail++] = pdb_Current->RegD1;
+			}
+		}
+
 		break;
 	case BASS_DEBUG_BUSY:
-		//TODO: BASS_DEBUG_BUSY
+		pdb_Current->RegD0 = serial_out_blocked;
 		break;
 	case BASS_TICK_COUNT:
 		pdb_Current->RegD0 = gTickCount;

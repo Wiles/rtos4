@@ -68,6 +68,11 @@ unsigned char serial_in_head;
 unsigned char serial_in_tail;
 
 /*!
+ * Is is the output serial port blocked
+ */
+int serial_out_blocked = FALSE;
+
+/*!
  * Data for serial out input buffer
  */
 short serial_out_data[256];
