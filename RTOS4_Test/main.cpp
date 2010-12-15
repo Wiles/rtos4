@@ -133,6 +133,8 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 
 		SetWindowLong (hwnd, GWL_USERDATA, (LONG)pData);
 
+		// Enable the serial debug output timer
+		SetTimer (hwnd, IDT_INTERRUPT_DEBUG_OUT, 100, NULL);
 		// Enable the interrupt timer
 		SetTimer (hwnd, IDT_INTERRUPT_7, 1000, NULL);
 
@@ -183,18 +185,19 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		}
 		}
 
+		int y = 400;
 		char buffer[512];
 		PDB *pdb = pdb_Current;
-		if (pdb == pdb_First)
+		int i = 2;
+		while (i-- > 0)
 		{
+			sprintf (buffer, "PDB Name: %s Status: %c Reason %d", pdb->ApplicationName, 
+				pdb->Status, pdb->Reason);
+			ExtTextOut (hdc, 0, y, 0, NULL, buffer, strlen (buffer), NULL);
+			y += 24;
 			pdb = pdb->NextPDB;
 		}
-		while (pdb != pdb_First)
-		{
-			sprintf (buffer, "PDB Status: %d", pdb->Status & BLOCKED);
-			ExtTextOut (hdc, 0, 400, 0, NULL, buffer, strlen (buffer), NULL);
-			pdb = pdb->NextPDB;
-		}
+
 		EndPaint (hwnd, &ps);
 		return 0;
 	}
@@ -229,11 +232,18 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		if (pData == NULL)
 			return -1;
 
-		InvalidateRect (hwnd, NULL, TRUE);
+		switch (wParam)
+		{
+		case IDT_INTERRUPT_DEBUG_OUT:
+			DebugOutputInterrupt ();
+			break;
+		case IDT_INTERRUPT_7:
+			InvalidateRect (hwnd, NULL, TRUE);
 
-		gTickCount++;
-		RoundRobinScheduler ();
-
+			gTickCount++;
+			RoundRobinScheduler ();
+			break;
+		}
 		break;
 	
 	case WM_KEYDOWN:
@@ -290,6 +300,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		return 0;
 
 	case WM_DESTROY:
+		KillTimer (hwnd, IDT_INTERRUPT_DEBUG_OUT);
 		KillTimer (hwnd, IDT_INTERRUPT_7);
 		PostQuitMessage (0);
 		return 0;

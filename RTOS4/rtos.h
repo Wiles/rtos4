@@ -106,10 +106,11 @@ extern char *rtos_strcpy (char *dest, char *src);
 extern void InitOS (void);
 extern int InitializePDB (int taskID, PDB *p, TASK *t, char *stack, unsigned long initVal);
 
-/*
+void DebugOutputInterrupt(void);
+
+/*!
  *
  */
-
 typedef struct systemtime {
 	 int hour;
 	 int minute;

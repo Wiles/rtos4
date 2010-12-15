@@ -83,6 +83,8 @@ enum Views
  */
 #define IDT_INTERRUPT_7 101
 
+#define IDT_INTERRUPT_DEBUG_OUT 102
+
 /*!
  *
  */
