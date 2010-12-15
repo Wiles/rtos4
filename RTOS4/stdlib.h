@@ -95,22 +95,6 @@ int IsDebugPortBusy(void);
  */
 unsigned long GetSystemTickCount(void);
 
-/*!
- * \brief
- * HEKAR TODO: FILL IN THIS COMMENT
- * \return
- *	
- */
-unsigned long GetGlobalDataAddress(void);
-
-/*!
- * \brief
- * HEKAR TODO: FILL IN THIS COMMENT
- * \return
- *	
- */
-void GetClockTime(struct systemtime *);
-
 #define __STDLIB_H__
 #endif
 
