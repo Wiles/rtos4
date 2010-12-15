@@ -65,7 +65,6 @@ TimerSupport (void)
 	 * potential support for rudimentary timing (similar to
 	 * the Windows "GetTickCount" concept)
 	 */
-
 	++gTickCount;
 
 	/*
