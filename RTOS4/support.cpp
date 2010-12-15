@@ -26,27 +26,6 @@ rtos_memcopy (unsigned char *dest, unsigned char *src, int numBytes)
 }	/* end rtos_memcopy */
 
 
-
-/*
- * void RoundRobinScheduler (void);
- *
- * This function will support a basic round robin scheduler
- * for our RTOS. Depends on global variable pdb_Current for
- * knowledge of which task is currently in use.
- */
-
-void
-RoundRobinScheduler (void)
-{
-	while (1) {
-		pdb_Current = pdb_Current->NextPDB;
-		if (pdb_Current->Status == READY)
-			break;
-	}	/* end while */
-}	/* end RoundRobinScheduler */
-
-
-
 /*
  * char * rtos_strcpy (char *dest, char *src);
  *

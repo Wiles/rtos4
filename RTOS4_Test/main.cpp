@@ -17,6 +17,7 @@
 #include "global_const.h"
 #include "draw.h"
 #include "../RTOS4/globals.h"
+#include "../RTOS4/rtos.h"
 
 #pragma warning ( disable : 4996 )
 
@@ -151,6 +152,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		return 0;
 
 	case WM_PAINT:
+	{
 		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
 		if (pData == NULL)
 			return -1;
@@ -180,9 +182,22 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 			break;
 		}
 		}
+
+		char buffer[512];
+		PDB *pdb = pdb_Current;
+		if (pdb == pdb_First)
+		{
+			pdb = pdb->NextPDB;
+		}
+		while (pdb != pdb_First)
+		{
+			sprintf (buffer, "PDB Status: %d", pdb->Status & BLOCKED);
+			ExtTextOut (hdc, 0, 400, 0, NULL, buffer, strlen (buffer), NULL);
+			pdb = pdb->NextPDB;
+		}
 		EndPaint (hwnd, &ps);
 		return 0;
-	
+	}
 	case WM_COMMAND:
 		pData = (RTOSTESTDATA *)GetWindowLong (hwnd, GWL_USERDATA);
 		if (pData == NULL)
@@ -214,12 +229,11 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		if (pData == NULL)
 			return -1;
 
-		if (pData->CurrentView == VIEW_OTHER)
-		{
-			InvalidateRect (hwnd, NULL, TRUE);
-		}
+		InvalidateRect (hwnd, NULL, TRUE);
 
 		gTickCount++;
+		RoundRobinScheduler ();
+
 		break;
 	
 	case WM_KEYDOWN:
