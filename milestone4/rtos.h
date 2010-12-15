@@ -8,8 +8,8 @@
  * as the declarations are geared towards RTOS internal support
  *
  * \remark
- * Though many global variables are defined here, they may or may not
- *	be initialized here, so watch out!
+ * History:
+ * 	Added block reasons, timedate struct
  * 
  */
 
@@ -20,10 +20,23 @@
 #define READY			'R'
 #define BLOCKED			'B'
 
-#define REASON_NONE		0
-#define REASON_SLEEP	1
-#define REASON_KEYBOARD	2
-#define REASON_DEBUG_IN	3
+#define REASON_NONE			0
+#define REASON_SLEEP		1
+
+/*!
+ * \brief Waiting for keyboard input
+ */
+#define REASON_KEYBOARD		2
+
+/*!
+ * \brief Waiting for debug input
+ */
+#define REASON_DEBUG_IN		3
+
+/*!
+ * \brief Waiting for keyboard output
+ */
+#define REASON_DEBUG_OUT	4
 
 #define SUCCESS			0
 #define ERROR			-1
@@ -58,6 +71,10 @@ typedef struct pdb {
 	unsigned long ApplicationID;
 	char ApplicationName[MAX_APPNAME_LENGTH];
 	unsigned long AmountOfGlobalSpace;	/* future use for App globals */
+	
+	/*!
+	 * \brief Location of tasks globabl space
+	 */
 	unsigned char *PointerToGlobalSpace;
 	unsigned long AmountOfStackSpace;
 	char *PointerToStackSpace;	/* bottom of stack, A7 points to top */
@@ -102,10 +119,10 @@ extern void RoundRobinScheduler (void);
 extern char *rtos_strcpy (char *dest, char *src);
 extern int InitializePDB (int taskID, PDB *p, TASK *t, char *stack, unsigned long initVal);
 
-/*
- *
+/*!
+ * \brief holds time information
+ *  used by GetClockTime() service
  */
-
 typedef struct systemtime {
 	 int hour;
 	 int minute;

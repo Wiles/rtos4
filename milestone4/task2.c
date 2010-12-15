@@ -4,7 +4,7 @@
  *
  * \brief
  * \remark
- * 
+ * 		Modified to test GetSystemTickCount
  */
  
 #include "shared.h"
@@ -52,7 +52,7 @@ Task2_main (void)
 		i = (char)GetSystemTickCount();
 		*p = i;
 
-		Sleep (1);
+		Sleep(1);
 	}	/* end while */
 }	/* end Task2_main */
 

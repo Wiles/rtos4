@@ -29,6 +29,7 @@ void SupportBASS (void)
 	unsigned long *ptrUSP;
 	int fSchedule;
 	struct systemtime *pTime;
+	short character;
 
 
 	/* force re-scheduling */
@@ -57,6 +58,7 @@ void SupportBASS (void)
 		pdb_Current->Reason = REASON_SLEEP;
 		fSchedule = TRUE;
 		break;
+		
 	case BASS_GET_KEYBOARD:
 		if( keyboard_head != keyboard_tail)
 		{
@@ -70,6 +72,7 @@ void SupportBASS (void)
 			fSchedule = TRUE;
 		}
 		break;
+		
 	case BASS_KEYBOARD_STATUS:
 		if( keyboard_head != keyboard_tail )
 		{
@@ -80,6 +83,7 @@ void SupportBASS (void)
 			pdb_Current->RegD0 = FALSE;
 		}
 		break;
+		
 	case BASS_GET_DEBUG:
 		if( serial_in_head != serial_in_tail )
 		{
@@ -93,6 +97,7 @@ void SupportBASS (void)
 			fSchedule = TRUE;
 		}
 		break;
+		
 	case BASS_DEBUG_IN_STATUS:
 		if( serial_in_head != serial_in_tail )
 		{
@@ -103,9 +108,12 @@ void SupportBASS (void)
 			pdb_Current->RegD0 = FALSE;
 		}
 		break;
+		
 	case BASS_WRITE_DEBUG:
+		/*Write out to debug port*/
 		break;
 	case BASS_DEBUG_BUSY:
+		/*Write out to debug port*/
 		break;
 	case BASS_TICK_COUNT:
 		pdb_Current->RegD0 = gTickCount;
@@ -116,6 +124,8 @@ void SupportBASS (void)
 	case BASS_GETCLOCKTIME:
 		/* grab the service parameters from the stack */
 		pTime = (struct systemtime *) ptrUSP[0];
+		
+		/*Convert tickcount to time*/
 		pTime->hour = gTickCount / 3600;
 		pTime->minutes = ( gTickCount - (pTime->hour * 3600) ) / 60; 
 		pTime->second = gTickCount % 60;

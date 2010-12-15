@@ -6,6 +6,8 @@
  * This file provides prototypes for standard library
  * functions that wrap access to the RTOS services
  * \remark
+ * History:
+ *  Added function prototypes for service calls
  */
 
 #ifndef __STDLIB_H__
@@ -27,6 +29,8 @@ void Sleep (unsigned long duration);
  * \brief
  * Get the next available keyboard character from the
  * system's keyboard buffer.
+ * This function will block if no characters are available.
+ * The task will be unblocked when a character becomes available
  * \return
  *	Next available character as a short
  */
@@ -47,6 +51,8 @@ int IsKeyboardCharacterAvailable(void);
  * \brief
  * Get the next available character from the
  * system's debugging buffer.
+ * This function will block if no characters are available.
+ * The task will be unblocked when a character becomes available
  * \return
  *	Next available character as a short
  */
