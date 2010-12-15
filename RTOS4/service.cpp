@@ -17,6 +17,13 @@
 
 void SupportBASS (void);
 
+/*!
+ * \brief Robin round scheduler
+ * \remark
+ * This scheduler also checks for input
+ * blocking and executes input functions
+ * when required.
+ */
 void RoundRobinScheduler(void)
 {
 	PDB *pdb = pdb_Current;
@@ -49,6 +56,12 @@ void RoundRobinScheduler(void)
 	}
 }
 
+/*!
+ * \brief Fired on debugging input
+ * \remark
+ * This is the interrupt for handling
+ * debugging input from a serial device.
+ */
 void DebugOutputInterrupt(void)
 {
 
@@ -113,18 +126,6 @@ unsigned long GetSystemTickCount(void)
 	return pdb_Current->RegD0;
 }
 
-unsigned long GetGlobalDataAddress(void)
-{
-	//TODO: unsigned long GetGlobalDataAddress(void)
-#define LOL 19
-	return LOL;
-}
-
-void GetClockTime(struct systemtime *stime)
-{
-	//TODO: void GetClockTime(struct systemtime *stime)
-}
-
  /*!
   * \brief Service call handler for RTOS
   * \remark
@@ -137,8 +138,6 @@ void SupportBASS (void)
 	/* Initialize our variables */
 	unsigned long *ptrUSP;
 	int fSchedule;
-	struct systemtime *pTime;
-
 
 	/* force re-scheduling */
 	fSchedule = FALSE;
@@ -245,17 +244,6 @@ void SupportBASS (void)
 		break;
 	case BASS_GLOBAL_ADDRESS:
 		pdb_Current->RegD0 = (unsigned long)*pdb_Current->PointerToGlobalSpace;
-		break;
-	case BASS_GETCLOCKTIME:
-		/* grab the service parameters from the stack */
-		pTime = (struct systemtime *) ptrUSP[0];
-		/* TODO: FIX DIVISION FOR THE TWO OPERATIONS BELOW */
-		/* we will use gTickCount/3 to mimic the actual hour */
-		/*	pTime->hour = gTickCount / 3; */
-		/* we will use gTickCount/2 to mimic the actual minute */
-		/* pTime->minute = gTickCount / 2; */
-		/* we will use gTickCount to mimic the actual second */
-		pTime->second = gTickCount;
 		break;
 	default:
 		pdb_Current->RegD0 = ERROR;

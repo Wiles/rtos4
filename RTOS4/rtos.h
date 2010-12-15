@@ -22,7 +22,15 @@
 
 #define REASON_NONE		0
 #define REASON_SLEEP	1
+
+/*!
+ * Block due to keyboard input
+ */
 #define REASON_KEYBOARD	2
+
+/*!
+ * Block due to debugging input
+ */
 #define REASON_DEBUG_IN	3
 
 #define SUCCESS			0
@@ -38,23 +46,20 @@
  * the following defines the total amount of reserved global memory
  * space for application stacks. 
  */
-
 #define TOTAL_STACK_MEMORY	8192
 
 /*
  * addresses of where things start in address space
  */
-
 #define RAM_START		0x00000000L
 #define ROM_START		0x00FC0000L
 #define VECTOR_START		0x00FC0000L
 #define VECTOR_SIZE		0x400L
 
-/*
+/*!
  * PDB structure used internally by RTOS
  * as per definition in Design Document 2008
  */
-
 typedef struct pdb {
 	struct pdb *NextPDB;	/* next PDB in the linked list */
 
@@ -99,7 +104,6 @@ typedef struct pdb {
 /*
  * common RTOS C level functions
  */
-
 extern void rtos_memcopy (unsigned char *dest, unsigned char *src, int numBytes);
 extern void RoundRobinScheduler (void);
 extern char *rtos_strcpy (char *dest, char *src);
@@ -107,15 +111,6 @@ extern void InitOS (void);
 extern int InitializePDB (int taskID, PDB *p, TASK *t, char *stack, unsigned long initVal);
 
 void DebugOutputInterrupt(void);
-
-/*!
- *
- */
-typedef struct systemtime {
-	 int hour;
-	 int minute;
-	 int second;
-} RTOS_SYSTEMTIME;
 
 #define __RTOS_H__
 #endif
