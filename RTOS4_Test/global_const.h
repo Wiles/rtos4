@@ -1,8 +1,9 @@
 /*!
  * \file global_const.h
- * \author Hekar Khani, Tom Kempton
+ * \author Hekar Khani, Samuel Lewis, Adrian Hyde, Dan Evans
  * \date December 8, 2010
- * \description Constants and definitions for the WP_Project Application
+ * \description Globals, constants and definitions for RTOS #4
+ *	 Windows Test application
  */
 
 #ifndef GLOBAL_CONST_H
@@ -99,18 +100,22 @@ enum WmTimers
 	IDT_INTERRUPT_7 = 101,
 
 	/*!
-	 * Timer for firing 
+	 * Timer for firing debugger output
 	 */
 	IDT_INTERRUPT_DEBUG_OUT
 };
 
 /*!
- * 
+ * Structure for storing the information of
+ * the main application window. This is
+ * put into GWL_USERDATA
  */
 typedef struct RTOSTESTDATA
 {
 	/*!
-	 * 
+	 * Current view state we're in.
+	 * This allows us to change window
+	 * panes.
 	 */
 	int CurrentView;
 } RTOSTESTDATA;

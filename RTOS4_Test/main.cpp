@@ -1,12 +1,14 @@
 /*!
  * \file main.cpp
- * \author Hekar Khani, Tom Kempton
- * \date December 8, 2010
+ * \author Hekar Khani, Samuel Lewis, Adrian Hyde, Dan Evans
+ * \date December 14, 2010
  * \description
- *	Test application for MusicBox child window.
- *	This features 2 MusicBox controls and set of
- *	buttons to manipulate their features and test
- *	them out.
+ *	Test application for RTOS Milestone 4. This application
+ *  allows us to simulate the theoretical functions
+ *  that Team #1 was designated with. Not all the functionality
+ *  is in this Windows application. We saw that it was not a 
+ *  wise idea to do that. Those functions are in the 
+ *  Visual 68k simulation based project.
  */
 
 #include <stdio.h>
@@ -125,6 +127,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 	switch (message)
 	{
 	case WM_CREATE:
+		// Initialize the RT OS
 		InitOS ();
 
 		pData = (RTOSTESTDATA *)malloc (sizeof (RTOSTESTDATA));
@@ -138,8 +141,10 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		// Enable the interrupt timer
 		SetTimer (hwnd, IDT_INTERRUPT_7, 1000, NULL);
 
+		// Keyboard buffer is our default view
 		pData->CurrentView = VIEW_KEYBOARD_BUFFER;
 
+		// Create our radio buttons for changing window panes
 		CreateWindow ("BUTTON", KEYBOARD_IN, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
 			0, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_KEYBOARD_BUFFER, hInst, NULL);
 		CreateWindow ("BUTTON", SERIAL_IN, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
@@ -149,6 +154,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		CreateWindow ("BUTTON", OTHER, WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON, 
 			VIEW_BUTTON_SIZE * 3, 0, VIEW_BUTTON_SIZE, 24, hwnd, (HMENU)IDC_VIEW_OTHER, hInst, NULL);
 
+		// Keyboard buffer is our default view
 		CheckDlgButton (hwnd, IDC_VIEW_KEYBOARD_BUFFER, TRUE);
 
 		return 0;
@@ -162,6 +168,9 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		GetClientRect (hwnd, &bounds);
 
 		hdc = BeginPaint (hwnd, &ps);
+		
+		// Draw each view differently depending on
+		// what view state we're in
 		switch (pData->CurrentView)
 		{
 		case VIEW_KEYBOARD_BUFFER:
@@ -178,6 +187,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 			break;
 		case VIEW_OTHER:
 		{
+			// Display the tickcount on view other
 			char buffer[512];
 			sprintf (buffer, "TickCount: %u", GetSystemTickCount());
 			ExtTextOut (hdc, 0, 40, 0, NULL, buffer, strlen (buffer), NULL);
@@ -185,9 +195,11 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		}
 		}
 
+		// Write out the information of each PDB
+		// This happens in every view
 		int y = 400;
 		char buffer[512];
-		PDB *pdb = pdb_Current;
+		PDB *pdb = pdb_First;
 		int i = 2;
 		while (i-- > 0)
 		{
@@ -206,6 +218,8 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		if (pData == NULL)
 			return -1;
 
+		// Handle radio button clicks and change
+		// view panes accordingly
 		switch (wParam)
 		{
 		case IDC_VIEW_KEYBOARD_BUFFER:
@@ -222,6 +236,8 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 			break;
 		}
 		
+		// SetFocus to the window (not the radio buttons)
+		// and redraw everything
 		SetFocus (hwnd);
 		InvalidateRect (hwnd, NULL, TRUE);
 
@@ -232,12 +248,16 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		if (pData == NULL)
 			return -1;
 
+		// Handle our timers
 		switch (wParam)
 		{
 		case IDT_INTERRUPT_DEBUG_OUT:
+			// Fire off the DebugOutputInterrupt
 			DebugOutputInterrupt ();
 			break;
 		case IDT_INTERRUPT_7:
+			// Redraw the screen and execute the Interrupt 7 handler
+			// (RoundRobinScheduler)
 			InvalidateRect (hwnd, NULL, TRUE);
 
 			gTickCount++;
@@ -251,6 +271,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		if (pData == NULL)
 			return -1;
 
+		// Handle keydowns on a per window pane basis
 		switch (pData->CurrentView)
 		{
 		case VIEW_KEYBOARD_BUFFER:
@@ -300,6 +321,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
 		return 0;
 
 	case WM_DESTROY:
+		// Cleanup our timers
 		KillTimer (hwnd, IDT_INTERRUPT_DEBUG_OUT);
 		KillTimer (hwnd, IDT_INTERRUPT_7);
 		PostQuitMessage (0);

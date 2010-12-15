@@ -6,9 +6,18 @@
  * requirements, we must support Basic Atari System Services (BASS) as 
  * well as Graphical Atari System Services (GASS).
  * \remark
- * As of now this file does the tasks defined for group 1 of the RTOS project. 
- * These include: 
- * 
+ *  This file performs the tasks defined for group 1 of the RTOS project.
+ *  Only the tasks that were feasible to do under Windows simulation were
+ *  done here. Others did not make much sense under Windows, so we choose
+ *  Visual 68k simulation instead.
+ *  Functions included here: 
+ *		short InputKeyboardCharacter(void);
+ *		int IsKeyboardCharacterAvailable(void);
+ *		short InputDebugCharacter(void);
+ *		int IsDebugCharacterAvailable(void);
+ *		void OutputDebugCharacter (short character);
+ *		int IsDebugPortBusy(void);
+ *		unsigned long GetSystemTickCount(void);
  */
 
 #include "rtos.h"

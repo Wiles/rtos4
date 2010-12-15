@@ -5,7 +5,7 @@
  * \brief
  * This file declares external global variables for our RTOS.
  * \remark
- * 
+ * Most of these globals are commented in the globals.cpp file.
  */
 
 #ifndef __GLOBALS_H__
