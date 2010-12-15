@@ -13,8 +13,41 @@
 
 #include "rtos.h"
 #include "globals.h"
+#include "stdlib.h"
 
 void SupportBASS (void);
+
+void RoundRobinScheduler()
+{
+	PDB *pdb = pdb_Current;
+	int scheduling = TRUE;
+
+	while (scheduling)
+	{
+		pdb = pdb->NextPDB;
+		if (pdb->Status == BLOCKED)
+		{
+			pdb_Current = pdb;
+			switch (pdb->Reason)
+			{
+			case REASON_KEYBOARD:
+				InputKeyboardCharacter();
+				scheduling = FALSE;
+				break;
+			case REASON_DEBUG_IN:
+				InputDebugCharacter();
+				scheduling = FALSE;
+				break;
+			}
+		}
+		else
+		{
+			scheduling = FALSE;
+		}
+		
+		pdb_Current = pdb;
+	}
+}
 
 short InputKeyboardCharacter(void)
 {
@@ -138,7 +171,6 @@ void SupportBASS (void)
 				// Block user until key is avaliable
 				pdb_Current->Status = BLOCKED;
 				pdb_Current->Reason = REASON_KEYBOARD;
-				fSchedule = TRUE;
 				break;
 			}
 		}
@@ -170,7 +202,6 @@ void SupportBASS (void)
 				// Block user until key is avaliable
 				pdb_Current->Status = BLOCKED;
 				pdb_Current->Reason = REASON_KEYBOARD;
-				fSchedule = TRUE;
 				break;
 			}
 		}
@@ -196,7 +227,7 @@ void SupportBASS (void)
 		//TODO: BASS_WRITE_DEBUG
 		break;
 	case BASS_DEBUG_BUSY:
-		//TODO: BASS_WRITE_DEBUG
+		//TODO: BASS_DEBUG_BUSY
 		break;
 	case BASS_TICK_COUNT:
 		pdb_Current->RegD0 = gTickCount;
@@ -224,12 +255,10 @@ void SupportBASS (void)
 	 * if required, schedule a new task to run
 	 */
 
-#ifndef X86_TEST
 	if (fSchedule)
 	{
 		RoundRobinScheduler();
 	}
-#endif /* X86_TEST */
 
 }	/* end SupportBASS */
 
