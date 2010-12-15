@@ -2,7 +2,8 @@
  * \file global_const.cpp
  * \author Hekar Khani, Samuel Lewis, Adrian Hyde, Dan Evans
  * \date December 8, 2010
- * \description Constants and definitions for the RTOS_Test Application
+ * \description Globals, constants and definitions for RTOS #4
+ *	 Windows Test application
  */
 
 #ifndef UNDER_CE

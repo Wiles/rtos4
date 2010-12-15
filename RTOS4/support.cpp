@@ -5,7 +5,9 @@
  * \brief
  * Additional C based support routines for RTOS
  * \remark
- * 
+ * Most of these functions are unnecessary under the Windows simulation, but
+ * they're kept here to keep the RTOS library as similar to the RTOS codebase
+ * as possible.
  * 
  */
 #include "rtos.h"

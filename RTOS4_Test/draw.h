@@ -1,3 +1,11 @@
+/*!
+ * \file draw.h
+ * \author Hekar Khani, Samuel Lewis, Adrian Hyde, Dan Evans
+ * \date December 8, 2010
+ * \description Supporting functions for drawing
+ *	on the RTOS #4 Windows test application
+ */
+
 #ifndef DRAW_H
 #define DRAW_H
 
@@ -9,16 +17,16 @@
  * This is the Window Procedure for the main window of this application.
  * It processes all messages destined for this main window.
  *
- * \param HWND hwnd -
- * \param HDC hdc -
- * \param T *cirbuffer - 
- * \param T head -
- * \param T tail -
- * \param unsigned int count -
- * \param x -
- * \param y -
- * \param w -
- * \param h - 
+ * \param HWND hwnd - Handle to window to draw on
+ * \param HDC hdc - HDC to perform painting
+ * \param T *cirbuffer - Circular buffer to draw to screen
+ * \param T head - Head of the buffer
+ * \param T tail - Tail of the buffer
+ * \param unsigned int count - Size of the buffer
+ * \param x - X coordinate to draw on screen
+ * \param y - Y coordinate to draw on screen
+ * \param w - Width to draw on screen
+ * \param h - Height to draw on screen
  */
 template <typename X, typename T>
 void DrawCircularBuffer (HWND hwnd, HDC hdc, X *cirbuffer, T head, T tail, unsigned int count, 
